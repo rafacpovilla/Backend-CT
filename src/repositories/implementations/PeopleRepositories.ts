@@ -20,13 +20,13 @@ const app = initializeApp(firebaseConfig);
 class PeopleRepository implements IPeopleRepositories {
     private readonly db = getFirestore(app);
 
-    async create(person: Person): Promise<void> {
+    async create(name: string, email: string, password: string, empresa: string): Promise<void> {
 
-        await setDoc(doc(this.db, "pessoas", person.email), {
-            name: person.name,
-            empresa: person.empresa,
-            com_quarto: person.com_quarto,
-            senha: person.senha
+        await setDoc(doc(this.db, "pessoas", email), {
+            name,
+            password,
+            empresa,
+            com_quarto: false, // Define como false por padrão
         });
 
         return undefined;
