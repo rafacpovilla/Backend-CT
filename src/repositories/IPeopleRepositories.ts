@@ -7,7 +7,7 @@ interface IPeopleRepositories {
      * @param email Email of the person
      * @param password password of the person
      */
-    create(name: string, email: string, password: string): Promise<void>;
+    create(name: string, email: string, password: string, empresa: string): Promise<void>;
 
     /**
      * Find a person by name
@@ -34,4 +34,4 @@ interface IPeopleRepositories {
     delete(name: string): Promise<void>;
 }
 
-export { IPeopleRepositories };
+export default IPeopleRepositories;
