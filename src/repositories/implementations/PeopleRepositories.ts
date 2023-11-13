@@ -17,7 +17,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-class PeopleRepository implements IPeopleRepositories {
+class PeopleRepositories implements IPeopleRepositories {
     private readonly db = getFirestore(app);
 
     async create(name: string, email: string, password: string, empresa: string): Promise<void> {
@@ -33,4 +33,4 @@ class PeopleRepository implements IPeopleRepositories {
     }
 }
 
-export default PeopleRepository;
+export default PeopleRepositories;
