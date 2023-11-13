@@ -12,8 +12,9 @@ interface IPeopleRepositories {
     /**
      * Find a person by name
      * @param name Name of the person
+     * @returns A person with the given name
      */
-    findByName(name: string): Promise<void>;
+    findByName(name: string): Promise<Person>;
 
     /**
      * List all people

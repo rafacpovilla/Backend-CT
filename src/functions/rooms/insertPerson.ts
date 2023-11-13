@@ -11,7 +11,7 @@ const insertPerson = async (
     const { id_quarto, email } = JSON.parse(event.body);
     
     if (!id_quarto)
-      throw new ClientError("Quarto não achado!");
+      throw new ClientError("ID errado!");
 
     const database = new RoomsRepositories();
 
