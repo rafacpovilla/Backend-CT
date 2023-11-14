@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Handler } from "src/errors/Handler";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import NotFoundError from "src/errors/NotFoundError";
-import { noContent } from "src/utils/Returns";
+import { ok } from "src/utils/Returns";
 
 
 const listPeople = async (): Promise<APIGatewayProxyResult> => {
@@ -12,7 +12,7 @@ const listPeople = async (): Promise<APIGatewayProxyResult> => {
     const list = await database.list();
     console.log(list);
         
-    return noContent ();
+    return ok ("message", list);
   };
   
   export const handler = Handler(listPeople);

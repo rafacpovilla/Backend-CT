@@ -16,12 +16,13 @@ const updatePerson = async (
       
   const database = new PeopleRepositories();
   const person = await database.findByName(name);
+  
   if (person === undefined)
       throw new NotFoundError("Pessoa não encontrada!");
 
   await database.update(person, change, condition);
     
-  return ok("Pessoa atualizada com sucesso!", "message");
+  return ok("message", "Pessoa atualizada com sucesso!");
   };
   
   export const handler = Handler(updatePerson);

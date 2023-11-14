@@ -15,7 +15,7 @@ const createPerson = async (
     const database = new PeopleRepositories();
     database.create(name, email, senha, empresa);
         
-    return created("Pessoa criada com sucesso!", "message");
+    return created("message", "Pessoa criada com sucesso!");
   };
   
   export const handler = Handler(createPerson);

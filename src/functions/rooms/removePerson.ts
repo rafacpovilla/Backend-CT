@@ -17,7 +17,7 @@ const removePerson = async (
     const room = await database.findById(id_quarto);
     database.removePerson(room, email);
         
-    return ok("Pessoa removida com sucesso!", "message");
+    return ok("message", "Pessoa removida com sucesso!");
   };
   
   export const handler = Handler(removePerson);

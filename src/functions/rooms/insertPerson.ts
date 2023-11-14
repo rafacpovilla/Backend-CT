@@ -26,7 +26,7 @@ const insertPerson = async (
     else
       throw new ClientError("Quarto cheio!");
         
-    return ok("Pessoa adicionada com sucesso!", "message");
+    return ok("message", "Pessoa adicionada com sucesso!");
   };
   
   export const handler = Handler(insertPerson);

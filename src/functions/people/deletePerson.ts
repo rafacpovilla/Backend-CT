@@ -17,7 +17,7 @@ const deletePerson = async (
 
     database.delete(name);
         
-    return ok("Pessoa deletada com sucesso!", "message");
+    return ok("message", "Pessoa deletada com sucesso!");
   };
   
   export const handler = Handler(deletePerson);

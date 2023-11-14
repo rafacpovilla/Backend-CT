@@ -18,7 +18,7 @@ const findPerson = async (
     
     console.log(person);
     
-    return ok("Pessoa encontrada com sucesso!", "message");
+    return ok("message", person);
   };
   
   export const handler = Handler(findPerson);

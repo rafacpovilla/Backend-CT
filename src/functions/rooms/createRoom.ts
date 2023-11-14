@@ -16,7 +16,7 @@ const createRoom = async (
 
     database.create(qtd_cama, "pioneira@gmail.com");
         
-    return created("Quarto criado com sucesso!", "message");
+    return created("message", "Quarto criado com sucesso!");
   };
   
   export const handler = Handler(createRoom);

@@ -15,7 +15,7 @@ const headers = {
   "Access-Control-Allow-Methods": "*",
 };
 
-export const ok = (data: unknown, dataName: string): APIGatewayProxyResult => {
+export const ok = (dataName: string, data: unknown): APIGatewayProxyResult => {
   return {
     statusCode: HttpStatusCode.OK,
     body: JSON.stringify({ [dataName]: data }),
@@ -31,10 +31,7 @@ export const noContent = (): APIGatewayProxyResult => {
   };
 };
 
-export const created = (
-  data: unknown,
-  dataName: string
-): APIGatewayProxyResult => {
+export const created = (dataName: string, data: unknown): APIGatewayProxyResult => {
   return {
     statusCode: HttpStatusCode.CREATED,
     body: JSON.stringify({ [dataName]: data }),
