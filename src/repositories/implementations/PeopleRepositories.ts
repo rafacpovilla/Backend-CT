@@ -3,6 +3,7 @@ import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } fro
 import IPeopleRepositories from '../IPeopleRepositories';
 import Person from "src/models/Person";
 import ClientError from "src/errors/ClientError";
+import { performance } from "perf_hooks";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAugWyvlqfPQi0Z2COhoLv7O6JH0unUQkk",
@@ -17,12 +18,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 class PeopleRepositories implements IPeopleRepositories {
-    list(): Promise<Person[]> {
-        throw new Error("Method not implemented.");
-    }
-    update(name: string, email: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
     private readonly db = getFirestore(app);
 
     async create(name: string, email: string, password: string, empresa: string): Promise<void> {
@@ -44,12 +39,69 @@ class PeopleRepositories implements IPeopleRepositories {
 
         const person = {
             name: document.data().name,
-            email: document.data().email,
-            senha: document.data().senha,
+            email: document.id,
+            senha: document.data().password,
             empresa: document.data().empresa,
             com_quarto: document.data().com_quarto,
         }
         return person;
+    }
+
+    async list(): Promise<Person[]> {
+        const peopleCollection = collection(this.db, 'pessoas');
+        const peopleSnapshot = await getDocs(peopleCollection);
+
+        const personList = peopleSnapshot.docs.map(doc => 
+            ({
+                name: doc.data().name,
+                email: doc.id,
+                senha: doc.data().password,
+                empresa: doc.data().empresa,
+                com_quarto: doc.data().com_quarto,
+            })
+        );
+
+        return personList as unknown as Person[];
+    }
+
+    update(Person: Person, change: string, condition: number): Promise<void> {
+        switch(condition){
+            case 0:
+                setDoc(doc(this.db, "pessoas", Person.email), {
+                    com_quarto: false,
+                    password: Person.senha,
+                    empresa: Person.empresa,
+                    name: Person.name
+                });
+                break;
+            case 1:
+                setDoc(doc(this.db, "pessoas", Person.email), {
+                    com_quarto: true,
+                    password: Person.senha,
+                    empresa: Person.empresa,
+                    name: Person.name
+                });
+                break;
+            case 2:
+                setDoc(doc(this.db, "pessoas", Person.email), {
+                    password: change,
+                    com_quarto: Person.com_quarto,
+                    empresa: Person.empresa,
+                    name: Person.name
+                });
+                break;
+            case 3:
+                setDoc(doc(this.db, "pessoas", Person.email), {
+                    empresa: change,
+                    password: Person.senha,
+                    com_quarto: Person.com_quarto,
+                    name: Person.name
+                });
+                break;
+            default:
+                throw new ClientError("Condição inválida!");
+        }
+        return undefined;
     }
 
     async delete(name: string): Promise<void> {

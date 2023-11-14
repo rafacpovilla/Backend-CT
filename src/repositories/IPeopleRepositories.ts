@@ -24,9 +24,10 @@ interface IPeopleRepositories {
     /**
      * Update a person
      * @param name Name of the person
-     * @param email Email of the person
+     * @param change New value of the person
+     * @param condition Condition to be changed (0 - com_quarto=false, 1 - com_quarto=true, 2 - password, 3 - empresa)
      */
-    update(name: string, email: string): Promise<void>;
+    update(Person: Person, change: string, condition: number): Promise<void>;
 
     /**
      * Delete a person

@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Handler } from "src/errors/Handler";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import ClientError from "src/errors/ClientError";
-import { ok } from "src/utils/Returns";
+import { created } from "src/utils/Returns";
 
 const createPerson = async (
     event: APIGatewayProxyEvent
@@ -13,10 +13,9 @@ const createPerson = async (
         throw new ClientError("Algum campo não definido!");
 
     const database = new PeopleRepositories();
-
     database.create(name, email, senha, empresa);
         
-    return ok("Pessoa criada com sucesso!", "message");
+    return created("Pessoa criada com sucesso!", "message");
   };
   
   export const handler = Handler(createPerson);

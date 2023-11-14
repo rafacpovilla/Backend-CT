@@ -77,17 +77,34 @@ class RoomsRepositories implements IRoomsRepository{
 
     async insertPerson(room: Rooom, email: string): Promise<void> {
         await setDoc(doc(this.db, "quartos", room.id, "pessoas", email), {});
+        this.update(room.id, room.qtd_camas--);
         return undefined;
     }
 
     async removePerson(room: Rooom, email: string): Promise<void> {
         const docRef = doc(this.db, "quartos", room.id, "pessoas", email);
         await deleteDoc(docRef);
+        this.update(room.id, room.qtd_camas++);
         return undefined;
     }
     
-    delete(id: string): Promise<void> {
+    async delete(id: string): Promise<void> {
         throw new Error("Method not implemented.");
+    }
+
+    async roomIsFull (room: Rooom): Promise<boolean> {
+        const document = await getDoc(doc(this.db, "quartos", room.id));
+        if(!document){
+            throw new ClientError("Document not found!");
+        }
+
+        const pessoas = collection(this.db, "quartos", room.id, "pessoas");
+        const pessoasSnapshot = await getDocs(pessoas);
+
+        if (pessoasSnapshot.size-1 >= document.data().qtd_camas) {
+            return true;
+        }
+        return false;
     }
 }
 

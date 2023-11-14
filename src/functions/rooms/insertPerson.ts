@@ -16,7 +16,15 @@ const insertPerson = async (
     const database = new RoomsRepositories();
 
     const room = await database.findById(id_quarto);
-    database.insertPerson(room, email);
+    if (!room)
+      throw new ClientError("Quarto não encontrado!");
+
+    /*if (database.roomIsFull(room)) 
+      throw new ClientError("Quarto cheio!");*/
+    if (room.qtd_camas > 0)
+      database.insertPerson(room, email);
+    else
+      throw new ClientError("Quarto cheio!");
         
     return ok("Pessoa adicionada com sucesso!", "message");
   };

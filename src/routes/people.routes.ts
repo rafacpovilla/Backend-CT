@@ -23,7 +23,7 @@ export const peopleRoutes = {
           {
             http: {
               path: "person/find",
-              method: "get",
+              method: "post",
               cors: true,
               // authorizer: {
               //   name: "authenticate",
@@ -66,4 +66,21 @@ export const peopleRoutes = {
           },
         ],
     },
+
+    listPeople: {
+        handler:
+          "src/functions/people/listPeople.handler",
+        events: [
+          {
+            http: {
+              path: "person/list",
+              method: "get",
+              cors: true,
+              // authorizer: {
+              //   name: "authenticate",
+              // },
+            },
+          },
+        ],
+    }
 }

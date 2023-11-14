@@ -17,7 +17,8 @@ const findPerson = async (
     const person = await database.findByName(name);
     
     console.log(person);
-    return ok("Pessoa criada com sucesso!", "message");
+    
+    return ok("Pessoa encontrada com sucesso!", "message");
   };
   
   export const handler = Handler(findPerson);

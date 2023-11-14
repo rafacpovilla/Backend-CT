@@ -5,7 +5,7 @@ import NotFoundError from "src/errors/NotFoundError";
 import { ok } from "src/utils/Returns";
 
 
-const deleteRoom = asnyc (
+const deleteRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   

@@ -47,6 +47,13 @@ interface IRoomsRepository {
      * @param id ID of the room to be deleted
      */
     delete(id: string): Promise<void>;
+
+    /**
+     * 
+     * @param room room to be checked
+     * @returns true if the room is full, false otherwise
+     */
+    roomIsFull (room: Room): Promise<boolean>;
 }
 
 export default IRoomsRepository;
