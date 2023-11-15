@@ -21,8 +21,12 @@ const insertPerson = async (
 
     /*if (database.roomIsFull(room)) 
       throw new ClientError("Quarto cheio!");*/
+
     if (room.qtd_camas > 0)
+    {
       database.insertPerson(room, email);
+      database.update(room.id, room.qtd_camas - 1);
+    }
     else
       throw new ClientError("Quarto cheio!");
         

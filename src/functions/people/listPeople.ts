@@ -10,7 +10,6 @@ const listPeople = async (): Promise<APIGatewayProxyResult> => {
     const database = new PeopleRepositories();
 
     const list = await database.list();
-    console.log(list);
         
     return ok ("message", list);
   };

@@ -69,6 +69,7 @@ class RoomsRepositories implements IRoomsRepository{
     }
 
     async update(room_id: string, qtd_camas: number): Promise<void> {
+        //console.log(qtd_camas);
         await setDoc(doc(this.db, "quartos", room_id), {
             qtd_camas: qtd_camas
         });
@@ -101,7 +102,7 @@ class RoomsRepositories implements IRoomsRepository{
         const pessoas = collection(this.db, "quartos", room.id, "pessoas");
         const pessoasSnapshot = await getDocs(pessoas);
 
-        if (pessoasSnapshot.size-1 >= document.data().qtd_camas) {
+        if (pessoasSnapshot.size-1 === document.data().qtd_camas) {
             return true;
         }
         return false;
