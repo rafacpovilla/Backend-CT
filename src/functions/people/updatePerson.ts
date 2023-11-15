@@ -12,11 +12,10 @@ const updatePerson = async (
   const { name, change, condition } = JSON.parse(event.body);
   if (name === undefined)
       throw new ClientError("Pessoa não formatada!");
-    
       
   const database = new PeopleRepositories();
   const person = await database.findByName(name);
-  
+
   if (person === undefined)
       throw new NotFoundError("Pessoa não encontrada!");
 

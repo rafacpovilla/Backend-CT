@@ -15,8 +15,8 @@ const findPerson = async (
     const database = new PeopleRepositories();
 
     const person = await database.findByName(name);
-    
-    console.log(person);
+    if (person === undefined)
+        throw new NotFoundError("Nome não encontrado!");
     
     return ok("message", person);
   };

@@ -22,7 +22,7 @@ export const roomRoutes = {
         events: [
           {
             http: {
-              path: "room/remove",
+              path: "room/person",
               method: "delete",
               cors: true,
               // authorizer: {
@@ -39,8 +39,42 @@ export const roomRoutes = {
         events: [
           {
             http: {
-              path: "room/insert",
+              path: "room/person",
               method: "put",
+              cors: true,
+              // authorizer: {
+              //   name: "authenticate",
+              // },
+            },
+          },
+        ],
+    },
+
+    listRooms: {
+        handler:
+          "src/functions/rooms/listRooms.handler",
+        events: [
+          {
+            http: {
+              path: "room",
+              method: "get",
+              cors: true,
+              // authorizer: {
+              //   name: "authenticate",
+              // },
+            },
+          },
+        ],
+    },
+
+    findRoom: {
+        handler:
+          "src/functions/rooms/findRoom.handler",
+        events: [
+          {
+            http: {
+              path: "room/find",
+              method: "post",
               cors: true,
               // authorizer: {
               //   name: "authenticate",

@@ -4,7 +4,7 @@ import RoomsRepositories from "src/repositories/implementations/RoomsRepositorie
 import NotFoundError from "src/errors/NotFoundError";
 import { ok } from "src/utils/Returns";
 
-const findById = async (
+const findRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
@@ -16,9 +16,7 @@ const findById = async (
 
     const room = await database.findById(id);
     
-    console.log(room);
-    
     return ok("message", room);
   };
   
-  export const handler = Handler(findById);
+  export const handler = Handler(findRoom);

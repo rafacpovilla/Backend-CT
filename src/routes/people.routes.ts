@@ -73,7 +73,7 @@ export const peopleRoutes = {
         events: [
           {
             http: {
-              path: "person/list",
+              path: "people",
               method: "get",
               cors: true,
               // authorizer: {

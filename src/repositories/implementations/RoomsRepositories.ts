@@ -69,7 +69,6 @@ class RoomsRepositories implements IRoomsRepository{
     }
 
     async update(room_id: string, qtd_camas: number): Promise<void> {
-        //console.log(qtd_camas);
         await setDoc(doc(this.db, "quartos", room_id), {
             qtd_camas: qtd_camas
         });
