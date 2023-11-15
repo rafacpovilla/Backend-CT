@@ -83,4 +83,21 @@ export const roomRoutes = {
           },
         ],
     },
+
+    updateRoom: {
+      handler:
+        "src/functions/rooms/updateRoom.handler",
+        events: [
+          {
+            http: {
+              path: "room/update",
+              method: "put",
+              cors: true,
+              // authorizer: {
+              //   name: "authenticate",
+              // },
+            },
+          },
+        ],
+    }
 }
