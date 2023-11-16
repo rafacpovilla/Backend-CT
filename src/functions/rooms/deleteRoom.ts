@@ -17,7 +17,7 @@ const deleteRoom = async (
 
     database.delete(qtd_cama);
 
-    return ok("message", "Cama deletada com sucesso");
+    return ok("Cama deletada com sucesso", "message");
   };
 
   export const handler = Handler(deleteRoom);

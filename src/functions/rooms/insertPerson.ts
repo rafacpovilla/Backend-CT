@@ -13,13 +13,13 @@ const insertPerson = async (
     if (!id_quarto)
       throw new ClientError("ID errado!");
 
+
     const database = new RoomsRepositories();
 
     const room = await database.findById(id_quarto);
     if (!room)
       throw new ClientError("Quarto não encontrado!");
 
-    console.log (database.roomIsFull(room));
     if (await database.roomIsFull(room)) 
       throw new ClientError("Quarto cheio!");
 

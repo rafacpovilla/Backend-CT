@@ -8,13 +8,13 @@ const findPerson = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-    const { name } = JSON.parse(event.body);
-    if (name === undefined)
+    const email = event.pathParameters.email;
+    if (email === undefined)
         throw new NotFoundError("Nome não encontrado!");
 
     const database = new PeopleRepositories();
 
-    const person = await database.findByName(name);
+    const person = await database.findByEmail(email);
     if (person === undefined)
         throw new NotFoundError("Nome não encontrado!");
     

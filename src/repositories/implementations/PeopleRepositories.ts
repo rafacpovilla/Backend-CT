@@ -3,7 +3,6 @@ import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } fro
 import IPeopleRepositories from '../IPeopleRepositories';
 import Person from "src/models/Person";
 import ClientError from "src/errors/ClientError";
-import { performance } from "perf_hooks";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAugWyvlqfPQi0Z2COhoLv7O6JH0unUQkk",
@@ -31,8 +30,8 @@ class PeopleRepositories implements IPeopleRepositories {
         return undefined;
     }
 
-    async findByName(name: string): Promise<Person> {
-        const document = await getDoc(doc(this.db, "pessoas", name));
+    async findByEmail(email: string): Promise<Person> {
+        const document = await getDoc(doc(this.db, "pessoas", email));
         if(!document){
             throw new ClientError("Document not found!");
         }
@@ -104,8 +103,8 @@ class PeopleRepositories implements IPeopleRepositories {
         return undefined;
     }
 
-    async delete(name: string): Promise<void> {
-        const docRef = doc(this.db, "pessoas", name);
+    async delete(email: string): Promise<void> {
+        const docRef = doc(this.db, "pessoas", email);
         await deleteDoc(docRef);
         return undefined;
     }

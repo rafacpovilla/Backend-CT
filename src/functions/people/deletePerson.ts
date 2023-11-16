@@ -9,13 +9,13 @@ const deletePerson = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-    const { name  } = JSON.parse(event.body);
-    if (name === undefined)
+    const { email  } = event.pathParameters;
+    if (email === undefined)
         throw new NotFoundError("Pessoa não encontrada!");
 
     const database = new PeopleRepositories();
 
-    database.delete(name);
+    database.delete(email);
         
     return ok("message", "Pessoa deletada com sucesso!");
   };

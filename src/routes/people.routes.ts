@@ -22,8 +22,8 @@ export const peopleRoutes = {
         events: [
           {
             http: {
-              path: "person/find",
-              method: "post",
+              path: "person/{email}",
+              method: "get",
               cors: true,
               // authorizer: {
               //   name: "authenticate",

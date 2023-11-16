@@ -14,7 +14,7 @@ interface IPeopleRepositories {
      * @param name Name of the person
      * @returns A person with the given name
      */
-    findByName(name: string): Promise<Person>;
+    findByEmail(email: string): Promise<Person>;
 
     /**
      * List all people
@@ -33,7 +33,7 @@ interface IPeopleRepositories {
      * Delete a person
      * @param name Name of the person
      */
-    delete(name: string): Promise<void>;
+    delete(email: string): Promise<void>;
 }
 
 export default IPeopleRepositories;

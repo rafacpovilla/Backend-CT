@@ -14,7 +14,7 @@ const createRoom = async (
 
     const database = new RoomsRepositories();
 
-    database.create(qtd_cama, "pioneira@gmail.com");
+    database.create(qtd_cama);
         
     return created("message", "Quarto criado com sucesso!");
   };

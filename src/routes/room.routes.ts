@@ -73,8 +73,8 @@ export const roomRoutes = {
         events: [
           {
             http: {
-              path: "room/find",
-              method: "post",
+              path: "room/{id}",
+              method: "get",
               cors: true,
               // authorizer: {
               //   name: "authenticate",
@@ -92,6 +92,23 @@ export const roomRoutes = {
             http: {
               path: "room",
               method: "put",
+              cors: true,
+              // authorizer: {
+              //   name: "authenticate",
+              // },
+            },
+          },
+        ],
+    },
+
+    deleteRoom: {
+        handler:
+          "src/functions/rooms/deleteRoom.handler",
+        events: [
+          {
+            http: {
+              path: "room/{id}",
+              method: "delete",
               cors: true,
               // authorizer: {
               //   name: "authenticate",

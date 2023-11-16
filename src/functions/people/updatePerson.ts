@@ -9,12 +9,12 @@ const updatePerson = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-  const { name, change, condition } = JSON.parse(event.body);
-  if (name === undefined)
+  const { email, change, condition } = JSON.parse(event.body);
+  if (email === undefined)
       throw new ClientError("Pessoa não formatada!");
       
   const database = new PeopleRepositories();
-  const person = await database.findByName(name);
+  const person = await database.findByEmail(email);
 
   if (person === undefined)
       throw new NotFoundError("Pessoa não encontrada!");
