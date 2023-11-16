@@ -18,7 +18,7 @@ const updateRoom = async (
   const room = await database.findById(room_id);
 
   if (room === undefined)
-      throw new NotFoundError("Pessoa não encontrada!");
+      throw new NotFoundError("Quarto não encontrado!");
 
   await database.update(room_id, qtd_camas);
     

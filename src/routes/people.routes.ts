@@ -56,7 +56,7 @@ export const peopleRoutes = {
         events: [
           {
             http: {
-              path: "person/update",
+              path: "person",
               method: "put",
               cors: true,
               // authorizer: {

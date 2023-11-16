@@ -40,7 +40,7 @@ export const roomRoutes = {
           {
             http: {
               path: "room/person",
-              method: "put",
+              method: "post",
               cors: true,
               // authorizer: {
               //   name: "authenticate",
@@ -90,7 +90,7 @@ export const roomRoutes = {
         events: [
           {
             http: {
-              path: "room/update",
+              path: "room",
               method: "put",
               cors: true,
               // authorizer: {

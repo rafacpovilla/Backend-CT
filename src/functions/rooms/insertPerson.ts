@@ -19,16 +19,11 @@ const insertPerson = async (
     if (!room)
       throw new ClientError("Quarto não encontrado!");
 
-    /*if (database.roomIsFull(room)) 
-      throw new ClientError("Quarto cheio!");*/
-
-    if (room.qtd_camas > 0)
-    {
-      database.insertPerson(room, email);
-      database.update(room.id, room.qtd_camas - 1);
-    }
-    else
+    console.log (database.roomIsFull(room));
+    if (await database.roomIsFull(room)) 
       throw new ClientError("Quarto cheio!");
+
+    database.insertPerson(room, email);
         
     return ok("message", "Pessoa adicionada com sucesso!");
   };

@@ -101,7 +101,7 @@ class RoomsRepositories implements IRoomsRepository{
         const pessoas = collection(this.db, "quartos", room.id, "pessoas");
         const pessoasSnapshot = await getDocs(pessoas);
 
-        if (pessoasSnapshot.size-1 === document.data().qtd_camas) {
+        if (pessoasSnapshot.size-1 >= document.data().qtd_camas) {
             return true;
         }
         return false;
