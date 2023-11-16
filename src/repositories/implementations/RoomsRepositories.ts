@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
 import IRoomsRepository from '../IRoomsRepositories';
+import PeopleRepositories from "./PeopleRepositories";
 import { v4 as uuidv4 } from "uuid";
 import Rooom from 'src/models/Room';
 import Person from 'src/models/Person';
@@ -83,7 +84,13 @@ class RoomsRepositories implements IRoomsRepository{
     }
 
     async insertPerson(room: Rooom, email: string): Promise<void> {
+        const database = new PeopleRepositories();
+        const person = database.findByEmail(email);
         await setDoc(doc(this.db, "quartos", room.id, "pessoas", email), {});
+        await setDoc(doc(this.db, "quartos", room.id, "pessoas", email), {
+            name = person.name,
+            empresa = person.empresa
+        });
         return undefined;
     }
 
@@ -93,8 +100,8 @@ class RoomsRepositories implements IRoomsRepository{
         return undefined;
     }
     
-    async delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(room: Rooom): Promise<void> {
+
     }
 
     async roomIsFull (room: Rooom): Promise<boolean> {

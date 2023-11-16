@@ -45,9 +45,9 @@ interface IRoomsRepository {
 
     /**
      * Delete a room
-     * @param id ID of the room to be deleted
+     * @param room room to be deleted
      */
-    delete(id: string): Promise<void>;
+    delete(room: Room): Promise<void>;
 
     /**
      * 

@@ -9,13 +9,14 @@ const deleteRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-    const { qtd_cama } = JSON.parse(event.body);
-    if (qtd_cama === undefined)
-        throw new NotFoundError("Cama não encontrada!");
+    const { id } = JSON.parse(event.body);
+    if (id === undefined)
+        throw new NotFoundError("Quarto não encontrado!");
 
     const database = new RoomsRepositories();
+    const room = database.findById(id);
 
-    database.delete(qtd_cama);
+    database.delete(room);
 
     return ok("Cama deletada com sucesso", "message");
   };
