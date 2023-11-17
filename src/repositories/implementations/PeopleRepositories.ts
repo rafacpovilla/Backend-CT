@@ -32,8 +32,8 @@ class PeopleRepositories implements IPeopleRepositories {
 
     async findByEmail(email: string): Promise<Person> {
         const document = await getDoc(doc(this.db, "pessoas", email));
-        if(!document){
-            throw new ClientError("Document not found!");
+        if (!document.exists()) {
+            return undefined;
         }
 
         const person = {

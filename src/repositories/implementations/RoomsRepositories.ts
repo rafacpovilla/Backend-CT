@@ -1,10 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
 import IRoomsRepository from '../IRoomsRepositories';
-import PeopleRepositories from "./PeopleRepositories";
 import { v4 as uuidv4 } from "uuid";
 import Rooom from 'src/models/Room';
-import Person from 'src/models/Person';
+import Person from "src/models/Person";
 import ClientError from "src/errors/ClientError";
 
 const firebaseConfig = {
@@ -83,13 +82,11 @@ class RoomsRepositories implements IRoomsRepository{
         return undefined;
     }
 
-    async insertPerson(room: Rooom, email: string): Promise<void> {
-        const database = new PeopleRepositories();
-        const person = database.findByEmail(email);
-        await setDoc(doc(this.db, "quartos", room.id, "pessoas", email), {});
-        await setDoc(doc(this.db, "quartos", room.id, "pessoas", email), {
-            name = person.name,
-            empresa = person.empresa
+    async insertPerson(room: Rooom, Person: Person): Promise<void> {
+        await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {});
+        await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {
+            name: Person.name,
+            empresa: Person.empresa
         });
         return undefined;
     }
@@ -113,7 +110,7 @@ class RoomsRepositories implements IRoomsRepository{
         const pessoas = collection(this.db, "quartos", room.id, "pessoas");
         const pessoasSnapshot = await getDocs(pessoas);
 
-        if (pessoasSnapshot.size-1 >= document.data().qtd_camas) {
+        if (pessoasSnapshot.size >= document.data().qtd_camas) {
             return true;
         }
         return false;

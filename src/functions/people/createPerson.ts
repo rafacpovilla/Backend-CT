@@ -13,6 +13,10 @@ const createPerson = async (
         throw new ClientError("Algum campo não definido!");
 
     const database = new PeopleRepositories();
+    const exist = await database.findByEmail(email);
+    if (exist !== undefined)
+        throw new ClientError("Email já cadastrado!");
+
     database.create(name, email, senha, empresa);
         
     return created("message", "Pessoa criada com sucesso!");

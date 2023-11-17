@@ -14,7 +14,7 @@ const deleteRoom = async (
         throw new NotFoundError("Quarto não encontrado!");
 
     const database = new RoomsRepositories();
-    const room = database.findById(id);
+    const room = await database.findById(id);
 
     database.delete(room);
 

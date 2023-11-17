@@ -34,7 +34,7 @@ interface IRoomsRepository {
      * @param room room where the person will be inserted
      * @param email email of the person to be inserted
      */
-    insertPerson(room: Room, email: string): Promise<void>;
+    insertPerson(room: Room, Person: Person): Promise<void>;
 
     /**
      * Remove a person from a room
