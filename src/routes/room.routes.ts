@@ -67,9 +67,9 @@ export const roomRoutes = {
         ],
     },
 
-    findRoom: {
+    listRoom: {
         handler:
-          "src/functions/rooms/findRoom.handler",
+          "src/functions/rooms/listRoom.handler",
         events: [
           {
             http: {

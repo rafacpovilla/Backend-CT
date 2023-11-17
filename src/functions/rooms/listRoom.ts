@@ -3,9 +3,8 @@ import { Handler } from "src/errors/Handler";
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
 import NotFoundError from "src/errors/NotFoundError";
 import { ok } from "src/utils/Returns";
-import { getDoc, doc } from "firebase/firestore";
 
-const findRoom = async (
+const listRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
@@ -27,4 +26,4 @@ const findRoom = async (
     return ok("message", room);
   };
   
-  export const handler = Handler(findRoom);
+  export const handler = Handler(listRoom);
