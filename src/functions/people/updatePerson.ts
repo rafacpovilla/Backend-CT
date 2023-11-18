@@ -5,11 +5,11 @@ import NotFoundError from "src/errors/NotFoundError";
 import { ok } from "src/utils/Returns";
 import ClientError from "src/errors/ClientError";
 
-const updatePerson = async (
+const updatePassword = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-  const { email, change, condition } = JSON.parse(event.body);
+  const { email, nova_senha } = JSON.parse(event.body);
   if (email === undefined)
       throw new ClientError("Pessoa não formatada!");
       
@@ -19,9 +19,9 @@ const updatePerson = async (
   if (person === undefined)
       throw new NotFoundError("Pessoa não encontrada!");
 
-  await database.update(person, change, condition);
+  await database.updatePassword(person, nova_senha);
     
   return ok("message", "Pessoa atualizada com sucesso!");
   };
   
-  export const handler = Handler(updatePerson);
+  export const handler = Handler(updatePassword);
