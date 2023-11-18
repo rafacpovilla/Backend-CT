@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Handler } from "src/errors/Handler";
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
+import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import ClientError from "src/errors/ClientError";
 import { ok } from "src/utils/Returns";
 
@@ -16,6 +17,9 @@ const removePerson = async (
 
     const room = await database.findById(id_quarto);
     database.removePerson(room, email);
+
+    const database2 = new PeopleRepositories();
+    database2.removeRoom(email);
         
     return ok("message", "Pessoa removida com sucesso!");
   };

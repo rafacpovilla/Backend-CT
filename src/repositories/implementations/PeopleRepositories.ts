@@ -25,6 +25,7 @@ class PeopleRepositories implements IPeopleRepositories {
             password,
             empresa,
             com_quarto: false, // Define como false por padrão
+            id_quarto: null
         });
 
         return undefined;
@@ -42,6 +43,7 @@ class PeopleRepositories implements IPeopleRepositories {
             senha: document.data().password,
             empresa: document.data().empresa,
             com_quarto: document.data().com_quarto,
+            id_quarto: document.data().id_quarto
         }
         return person;
     }
@@ -57,55 +59,35 @@ class PeopleRepositories implements IPeopleRepositories {
                 senha: doc.data().password,
                 empresa: doc.data().empresa,
                 com_quarto: doc.data().com_quarto,
+                id_quarto: doc.data().id_quarto
             })
         );
 
         return personList as unknown as Person[];
     }
 
-    update(Person: Person, change: string, condition: number): Promise<void> {
-        switch(condition){
-            case 0:
-                setDoc(doc(this.db, "pessoas", Person.email), {
-                    com_quarto: false,
-                    password: Person.senha,
-                    empresa: Person.empresa,
-                    name: Person.name
-                });
-                break;
-            case 1:
-                setDoc(doc(this.db, "pessoas", Person.email), {
-                    com_quarto: true,
-                    password: Person.senha,
-                    empresa: Person.empresa,
-                    name: Person.name
-                });
-                break;
-            case 2:
-                setDoc(doc(this.db, "pessoas", Person.email), {
-                    password: change,
-                    com_quarto: Person.com_quarto,
-                    empresa: Person.empresa,
-                    name: Person.name
-                });
-                break;
-            case 3:
-                setDoc(doc(this.db, "pessoas", Person.email), {
-                    empresa: change,
-                    password: Person.senha,
-                    com_quarto: Person.com_quarto,
-                    name: Person.name
-                });
-                break;
-            default:
-                throw new ClientError("Condição inválida!");
-        }
+    async updatePassword(Person: Person, new_password: string): Promise<void> {
+        await setDoc(doc(this.db, "pessoas", Person.email), {
+            name: Person.name,
+            password: new_password,
+            empresa: Person.empresa,
+            com_quarto: Person.com_quarto,
+            id_quarto: Person.id_quarto
+        });
         return undefined;
     }
 
     async delete(email: string): Promise<void> {
         const docRef = doc(this.db, "pessoas", email);
         await deleteDoc(docRef);
+        return undefined;
+    }
+
+    async removeRoom (email: string): Promise<void> {
+        await setDoc(doc(this.db, "pessoas", email), {
+            com_quarto: false,
+            id_quarto: null
+        });
         return undefined;
     }
 }

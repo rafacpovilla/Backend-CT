@@ -27,13 +27,20 @@ interface IPeopleRepositories {
      * @param change New value of the person
      * @param condition Condition to be changed (0 - com_quarto=false, 1 - com_quarto=true, 2 - password, 3 - empresa)
      */
-    update(Person: Person, change: string, condition: number): Promise<void>;
+    updatePassword(Person: Person, new_password: string): Promise<void>;
 
     /**
      * Delete a person
      * @param name Name of the person
      */
     delete(email: string): Promise<void>;
+
+
+    /**
+     * Clean its "id_quarto" field and set "com_quarto" to false
+     * @param email Email of the person
+     */
+    removeRoom (email: string): Promise<void>;
 }
 
 export default IPeopleRepositories;

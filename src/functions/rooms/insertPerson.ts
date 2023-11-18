@@ -15,10 +15,10 @@ const insertPerson = async (
     if (!id_quarto)
       throw new ClientError("ID errado!");
 
-
     const database = new RoomsRepositories();
 
     const room = await database.findById(id_quarto);
+
     if (!room)
       throw new NotFoundError("Quarto não encontrado!");
 
@@ -32,10 +32,8 @@ const insertPerson = async (
       throw new NotFoundError("Pessoa não cadastrada!");
 
     if (!person.com_quarto)
-    {
       database.insertPerson(room, person);
-      database2.update (person, " ", 1);
-    }
+
     else
       throw new ClientError("Pessoa já está em um quarto!");
         

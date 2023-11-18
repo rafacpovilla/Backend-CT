@@ -88,6 +88,10 @@ class RoomsRepositories implements IRoomsRepository{
             name: Person.name,
             empresa: Person.empresa
         });
+        await setDoc(doc(this.db, "pessoas", Person.email), {
+            com_quarto: true,
+            id_quarto: room.id
+        });
         return undefined;
     }
 
