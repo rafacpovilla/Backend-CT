@@ -61,30 +61,25 @@ class RoomsRepositories implements IRoomsRepository{
     }
 
     async findById(id: string): Promise<Rooom> {
+        const quartoDoc = await getDoc(doc(this.db, 'quartos', id));
 
-        const quartoSnapshot = await doc(this.db, 'quartos', id);
-        const document = await getDoc(quartoSnapshot);
-        if(!document.exists()){
-            return undefined
-        }
+        if (!quartoDoc.exists())
+            return undefined;
 
+        const pessoasCollection = collection(quartoDoc.ref, 'pessoas');
+
+        const pessoasSnapshot = await getDocs(pessoasCollection);
+
+        const listaPessoas = pessoasSnapshot.docs.map((pessoaDoc) => ({
+            nome: pessoaDoc.data().name,
+            empresa: pessoaDoc.data().empresa,
+        }));
         const room = {
-            id: document.id,
-            qtd_camas: document.data().qtd_camas,
-            pessoas: document.data().pessoas
-        }
-        const quarto = Promise.all(quartoSnapshot.docs.map(async doc => {
-            const pessoasCollection = collection(this.db, 'quartos', doc.id, 'pessoas');
-            const pessoasSnapshot = await getDocs(pessoasCollection);
-            const pessoas = pessoasSnapshot.docs.map(doc => doc.data());
-            return {
-                id: doc.id,
-                qtd_camas: doc.data().qtd_camas,
-                pessoas: pessoas
-            }
-        })
-    );
-        return room;
+            id: quartoDoc.id,
+            qtd_camas: quartoDoc.data().qtd_camas,
+            pessoas: listaPessoas,
+        };
+      return room;
     }
 
     async update(room_id: string, qtd_camas: number): Promise<void> {

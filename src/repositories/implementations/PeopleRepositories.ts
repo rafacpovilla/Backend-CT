@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } from "firebase/firestore"; 
 import IPeopleRepositories from '../IPeopleRepositories';
 import Person from "src/models/Person";
-import ClientError from "src/errors/ClientError";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAugWyvlqfPQi0Z2COhoLv7O6JH0unUQkk",
@@ -22,7 +21,7 @@ class PeopleRepositories implements IPeopleRepositories {
     async create(name: string, email: string, password: string, empresa: string): Promise<void> {
         await setDoc(doc(this.db, "pessoas", email), {
             name,
-            password,
+            senha: password,
             empresa,
             com_quarto: false, // Define como false por padrão
             id_quarto: null

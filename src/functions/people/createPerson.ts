@@ -8,8 +8,8 @@ const createPerson = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-    const { name, email, empresa, senha  } = JSON.parse(event.body);
-    if (name === undefined || email === undefined || empresa === undefined || senha === undefined)
+    const { nome, email, empresa, senha  } = JSON.parse(event.body);
+    if (nome === undefined || email === undefined || empresa === undefined || senha === undefined)
         throw new ClientError("Algum campo não definido!");
 
     const database = new PeopleRepositories();
@@ -17,7 +17,7 @@ const createPerson = async (
     if (exist !== undefined)
         throw new ClientError("Email já cadastrado!");
 
-    database.create(name, email, senha, empresa);
+    database.create(nome, email, senha, empresa);
         
     return created("message", "Pessoa criada com sucesso!");
   };
