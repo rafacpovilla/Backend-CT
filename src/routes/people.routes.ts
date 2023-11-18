@@ -39,7 +39,7 @@ export const peopleRoutes = {
         events: [
           {
             http: {
-              path: "person",
+              path: "person/{email}",
               method: "delete",
               cors: true,
               // authorizer: {

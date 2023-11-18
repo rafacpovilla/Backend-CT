@@ -38,9 +38,9 @@ interface IPeopleRepositories {
 
     /**
      * Clean its "id_quarto" field and set "com_quarto" to false
-     * @param email Email of the person
+     * @param Person Person to be removed
      */
-    removeRoom (email: string): Promise<void>;
+    removeRoom (Person: Person): Promise<void>;
 }
 
 export default IPeopleRepositories;

@@ -12,14 +12,14 @@ const insertPerson = async (
   
     const { id_quarto, email } = JSON.parse(event.body);
     
-    if (!id_quarto)
-      throw new ClientError("ID errado!");
+    if (id_quarto === undefined)
+      throw new ClientError("ID não detectado!");
 
     const database = new RoomsRepositories();
 
     const room = await database.findById(id_quarto);
 
-    if (!room)
+    if (room === undefined)
       throw new NotFoundError("Quarto não encontrado!");
 
     if (await database.roomIsFull(room)) 

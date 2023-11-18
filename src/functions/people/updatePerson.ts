@@ -12,6 +12,9 @@ const updatePassword = async (
   const { email, nova_senha } = JSON.parse(event.body);
   if (email === undefined)
       throw new ClientError("Pessoa não formatada!");
+
+    if (nova_senha === undefined)
+        throw new ClientError("Pessoa não formatada!");
       
   const database = new PeopleRepositories();
   const person = await database.findByEmail(email);

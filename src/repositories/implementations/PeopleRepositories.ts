@@ -40,7 +40,7 @@ class PeopleRepositories implements IPeopleRepositories {
         const person = {
             name: document.data().name,
             email: document.id,
-            senha: document.data().password,
+            senha: document.data().senha,
             empresa: document.data().empresa,
             com_quarto: document.data().com_quarto,
             id_quarto: document.data().id_quarto
@@ -56,7 +56,7 @@ class PeopleRepositories implements IPeopleRepositories {
             ({
                 name: doc.data().name,
                 email: doc.id,
-                senha: doc.data().password,
+                senha: doc.data().senha,
                 empresa: doc.data().empresa,
                 com_quarto: doc.data().com_quarto,
                 id_quarto: doc.data().id_quarto
@@ -69,7 +69,7 @@ class PeopleRepositories implements IPeopleRepositories {
     async updatePassword(Person: Person, new_password: string): Promise<void> {
         await setDoc(doc(this.db, "pessoas", Person.email), {
             name: Person.name,
-            password: new_password,
+            senha: new_password,
             empresa: Person.empresa,
             com_quarto: Person.com_quarto,
             id_quarto: Person.id_quarto
@@ -83,8 +83,12 @@ class PeopleRepositories implements IPeopleRepositories {
         return undefined;
     }
 
-    async removeRoom (email: string): Promise<void> {
-        await setDoc(doc(this.db, "pessoas", email), {
+    async removeRoom (Person: Person): Promise<void> {
+        await setDoc(doc(this.db, "pessoas", Person.email), {
+            name: Person.name,
+            email: Person.email,
+            senha: Person.senha,
+            empresa: Person.empresa,
             com_quarto: false,
             id_quarto: null
         });

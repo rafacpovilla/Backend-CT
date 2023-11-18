@@ -62,9 +62,10 @@ class RoomsRepositories implements IRoomsRepository{
 
     async findById(id: string): Promise<Rooom> {
 
-        const document = await getDoc(doc(this.db, "quartos", id));
-        if(!document){
-            throw new ClientError("Document not found!");
+        const quartoSnapshot = await doc(this.db, 'quartos', id);
+        const document = await getDoc(quartoSnapshot);
+        if(!document.exists()){
+            return undefined
         }
 
         const room = {
@@ -72,6 +73,17 @@ class RoomsRepositories implements IRoomsRepository{
             qtd_camas: document.data().qtd_camas,
             pessoas: document.data().pessoas
         }
+        const quarto = Promise.all(quartoSnapshot.docs.map(async doc => {
+            const pessoasCollection = collection(this.db, 'quartos', doc.id, 'pessoas');
+            const pessoasSnapshot = await getDocs(pessoasCollection);
+            const pessoas = pessoasSnapshot.docs.map(doc => doc.data());
+            return {
+                id: doc.id,
+                qtd_camas: doc.data().qtd_camas,
+                pessoas: pessoas
+            }
+        })
+    );
         return room;
     }
 
@@ -83,14 +95,18 @@ class RoomsRepositories implements IRoomsRepository{
     }
 
     async insertPerson(room: Rooom, Person: Person): Promise<void> {
+        await setDoc(doc(this.db, "pessoas", Person.email), {
+            name: Person.name,
+            email: Person.email,
+            empresa: Person.empresa,
+            com_quarto: true,
+            senha: Person.senha,
+            id_quarto: room.id
+        });
         await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {});
         await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {
             name: Person.name,
             empresa: Person.empresa
-        });
-        await setDoc(doc(this.db, "pessoas", Person.email), {
-            com_quarto: true,
-            id_quarto: room.id
         });
         return undefined;
     }
@@ -122,8 +138,8 @@ class RoomsRepositories implements IRoomsRepository{
 
     async roomIsEmpty (room: Rooom): Promise<boolean> {
         const document = await getDoc(doc(this.db, "quartos", room.id));
-        if(!document){
-            throw new ClientError("Document not found!");
+        if(!document.exists()){
+            return undefined
         }
 
         const pessoas = collection(this.db, "quartos", room.id, "pessoas");

@@ -19,7 +19,8 @@ const removePerson = async (
     database.removePerson(room, email);
 
     const database2 = new PeopleRepositories();
-    database2.removeRoom(email);
+    const person = await database2.findByEmail(email);
+    database2.removeRoom(person);
         
     return ok("message", "Pessoa removida com sucesso!");
   };
