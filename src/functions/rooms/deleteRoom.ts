@@ -21,9 +21,10 @@ const deleteRoom = async (
         throw new NotFoundError("Quarto não encontrado!");
 
     const database2 = new PeopleRepositories();
-    const listaPessoas = await database.listPeopleInsideRoom(room);
-    for (let i = 0; i < listaPessoas.length; i++) {
-        const person = await database2.findByEmail(listaPessoas[i]);
+    const listaEmail = await database.listPeopleInsideRoom(room);
+    for (let i = 0; i < listaEmail.length; i++) {
+        const person = await database2.findByEmail(listaEmail[i]);
+        await database.removePerson (room, listaEmail[i])
         await database2.removeRoom(person);
     }
     
