@@ -11,7 +11,7 @@ interface IPeopleRepositories {
 
     /**
      * Find a person by name
-     * @param name Name of the person
+     * @param email Email of the person
      * @returns A person with the given name
      */
     findByEmail(email: string): Promise<Person>;
@@ -23,15 +23,14 @@ interface IPeopleRepositories {
 
     /**
      * Update a person
-     * @param name Name of the person
-     * @param change New value of the person
-     * @param condition Condition to be changed (0 - com_quarto=false, 1 - com_quarto=true, 2 - password, 3 - empresa)
+     * @param Person Person to be updated
+     * @param new_password new password
      */
     updatePassword(Person: Person, new_password: string): Promise<void>;
 
     /**
      * Delete a person
-     * @param name Name of the person
+     * @param email Email of the person
      */
     delete(email: string): Promise<void>;
 

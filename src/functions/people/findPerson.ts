@@ -16,7 +16,7 @@ const findPerson = async (
 
     const person = await database.findByEmail(email);
     if (person === undefined)
-        throw new NotFoundError("Nome não encontrado!");
+        throw new NotFoundError("Email não encontrado!");
     
     return ok("message", person);
   };

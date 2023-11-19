@@ -62,7 +62,7 @@ interface IRoomsRepository {
      */
     roomIsEmpty (room: Room): Promise<boolean>;
 
-    listPeopleInsideRoom(room: Room): Promise<Person[]>;
+    listPeopleInsideRoom(room: Room): Promise<string[]>;
 }
 
 export default IRoomsRepository;

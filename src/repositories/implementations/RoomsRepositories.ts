@@ -113,7 +113,9 @@ class RoomsRepositories implements IRoomsRepository{
     }
     
     async delete(room: Rooom): Promise<void> {
-
+        const docRef = doc(this.db, "quartos", room.id);
+        await deleteDoc(docRef);
+        return undefined;
     }
 
     async roomIsFull (room: Rooom): Promise<boolean> {
@@ -146,19 +148,12 @@ class RoomsRepositories implements IRoomsRepository{
         return false;
     }   
 
-    async listPeopleInsideRoom(room: Rooom): Promise<Person[]> {
-        const peopleCollection = collection(this.db, "quartos", room.id, "pessoas");
-        const peopleSnapshot = await getDocs(peopleCollection);
+    async listPeopleInsideRoom(room: Rooom): Promise<string[]> {
+        const pessoas = collection(this.db, "quartos", room.id, "pessoas");
+        const pessoasSnapshot = await getDocs(pessoas);
 
-        const personList = peopleSnapshot.docs.map(doc => 
-            ({
-                name: doc.data().name,
-                email: doc.id,
-                empresa: doc.data().empresa,
-            })
-        );
-
-        return personList as unknown as Person[];
+        const listaPessoas = pessoasSnapshot.docs.map((pessoaDoc) => pessoaDoc.id);
+        return listaPessoas;
     }
 }
 
