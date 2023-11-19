@@ -3,6 +3,7 @@ import { getFirestore, collection, getDocs, setDoc, doc, getDoc, deleteDoc } fro
 import IRoomsRepository from '../IRoomsRepositories';
 import { v4 as uuidv4 } from "uuid";
 import Rooom from 'src/models/Room';
+import Person from "src/models/Person";
 import ClientError from "src/errors/ClientError";
 
 const firebaseConfig = {
@@ -20,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 class RoomsRepositories implements IRoomsRepository{
     private readonly db = getFirestore(app);
 
-    async create(qtd_camas: number, email: string): Promise<void> {
+    async create(qtd_camas: number): Promise<void> {
 
         //Generate UUID (Universally Unique Identifier)
         // Or its just a random string
@@ -28,7 +29,7 @@ class RoomsRepositories implements IRoomsRepository{
         
         // Add a new document with a generated id. And create a new collection called "pessoas" inside the document
         // the object doesn't need to have any data, just an ID to reference a person from the main people collection
-        await setDoc(doc(this.db, "quartos", uuid, "pessoas", email), {});
+        await setDoc(doc(this.db, "quartos", uuid), {});
 
         // Add a new document in the "quartos" collection with the generated ID
         // and set the data of the document to the object passed as parameter
@@ -44,10 +45,15 @@ class RoomsRepositories implements IRoomsRepository{
         const quartosCollection = collection(this.db, 'quartos');
         const quartoSnapshot = await getDocs(quartosCollection);
 
-        const quartoList = quartoSnapshot.docs.map(doc => 
-            ({
-                id: doc.id,
-                qtd_camas: doc.data().qtd_camas
+        const quartoList = Promise.all(quartoSnapshot.docs.map(async doc => {
+                const pessoasCollection = collection(this.db, 'quartos', doc.id, 'pessoas');
+                const pessoasSnapshot = await getDocs(pessoasCollection);
+                const pessoas = pessoasSnapshot.docs.map(doc => doc.data());
+                return {
+                    id: doc.id,
+                    qtd_camas: doc.data().qtd_camas,
+                    pessoas: pessoas
+                }
             })
         );
 
@@ -55,17 +61,25 @@ class RoomsRepositories implements IRoomsRepository{
     }
 
     async findById(id: string): Promise<Rooom> {
+        const quartoDoc = await getDoc(doc(this.db, 'quartos', id));
 
-        const document = await getDoc(doc(this.db, "quartos", id));
-        if(!document){
-            throw new ClientError("Document not found!");
-        }
+        if (!quartoDoc.exists())
+            return undefined;
 
+        const pessoasCollection = collection(quartoDoc.ref, 'pessoas');
+
+        const pessoasSnapshot = await getDocs(pessoasCollection);
+
+        const listaPessoas = pessoasSnapshot.docs.map((pessoaDoc) => ({
+            nome: pessoaDoc.data().name,
+            empresa: pessoaDoc.data().empresa,
+        }));
         const room = {
-            id: document.id,
-            qtd_camas: document.data().qtd_camas
-        }
-        return room;
+            id: quartoDoc.id,
+            qtd_camas: quartoDoc.data().qtd_camas,
+            pessoas: listaPessoas,
+        };
+      return room;
     }
 
     async update(room_id: string, qtd_camas: number): Promise<void> {
@@ -75,8 +89,20 @@ class RoomsRepositories implements IRoomsRepository{
         return undefined;
     }
 
-    async insertPerson(room: Rooom, email: string): Promise<void> {
-        await setDoc(doc(this.db, "quartos", room.id, "pessoas", email), {});
+    async insertPerson(room: Rooom, Person: Person): Promise<void> {
+        await setDoc(doc(this.db, "pessoas", Person.email), {
+            name: Person.name,
+            email: Person.email,
+            empresa: Person.empresa,
+            com_quarto: true,
+            senha: Person.senha,
+            id_quarto: room.id
+        });
+        await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {});
+        await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {
+            name: Person.name,
+            empresa: Person.empresa
+        });
         return undefined;
     }
 
@@ -86,8 +112,48 @@ class RoomsRepositories implements IRoomsRepository{
         return undefined;
     }
     
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(room: Rooom): Promise<void> {
+        const docRef = doc(this.db, "quartos", room.id);
+        await deleteDoc(docRef);
+        return undefined;
+    }
+
+    async roomIsFull (room: Rooom): Promise<boolean> {
+        const document = await getDoc(doc(this.db, "quartos", room.id));
+        if(!document){
+            throw new ClientError("Document not found!");
+        }
+
+        const pessoas = collection(this.db, "quartos", room.id, "pessoas");
+        const pessoasSnapshot = await getDocs(pessoas);
+
+        if (pessoasSnapshot.size >= document.data().qtd_camas) {
+            return true;
+        }
+        return false;
+    }
+
+    async roomIsEmpty (room: Rooom): Promise<boolean> {
+        const document = await getDoc(doc(this.db, "quartos", room.id));
+        if(!document.exists()){
+            return undefined
+        }
+
+        const pessoas = collection(this.db, "quartos", room.id, "pessoas");
+        const pessoasSnapshot = await getDocs(pessoas);
+
+        if (pessoasSnapshot.empty) {
+            return true;
+        }
+        return false;
+    }   
+
+    async listPeopleInsideRoom(room: Rooom): Promise<string[]> {
+        const pessoas = collection(this.db, "quartos", room.id, "pessoas");
+        const pessoasSnapshot = await getDocs(pessoas);
+
+        const listaPessoas = pessoasSnapshot.docs.map((pessoaDoc) => pessoaDoc.id);
+        return listaPessoas;
     }
 }
 

@@ -7,13 +7,14 @@ interface IPeopleRepositories {
      * @param email Email of the person
      * @param password password of the person
      */
-    create(name: string, email: string, password: string): Promise<void>;
+    create(name: string, email: string, password: string, empresa: string): Promise<void>;
 
     /**
      * Find a person by name
-     * @param name Name of the person
+     * @param email Email of the person
+     * @returns A person with the given name
      */
-    findByName(name: string): Promise<void>;
+    findByEmail(email: string): Promise<Person>;
 
     /**
      * List all people
@@ -22,16 +23,23 @@ interface IPeopleRepositories {
 
     /**
      * Update a person
-     * @param name Name of the person
-     * @param email Email of the person
+     * @param Person Person to be updated
+     * @param new_password new password
      */
-    update(name: string, email: string): Promise<void>;
+    updatePassword(Person: Person, new_password: string): Promise<void>;
 
     /**
      * Delete a person
-     * @param name Name of the person
+     * @param email Email of the person
      */
-    delete(name: string): Promise<void>;
+    delete(email: string): Promise<void>;
+
+
+    /**
+     * Clean its "id_quarto" field and set "com_quarto" to false
+     * @param Person Person to be removed
+     */
+    removeRoom (Person: Person): Promise<void>;
 }
 
-export { IPeopleRepositories };
+export default IPeopleRepositories;

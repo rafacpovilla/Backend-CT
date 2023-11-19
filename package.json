@@ -14,7 +14,7 @@
     "@google-cloud/firestore": "^7.1.0",
     "@middy/core": "^3.4.0",
     "@middy/http-json-body-parser": "^3.4.0",
-    "firebase": "^10.5.2",
+    "firebase": "^10.6.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import Room from "src/models/Room";
+import Person from "src/models/Person";
 
 interface IRoomsRepository {
 
@@ -8,7 +9,7 @@ interface IRoomsRepository {
      * @param qtd_camas numeric value of the number of beds in the room
      * @param email email of the person who will be in the room
      */
-    create(qtd_camas: number, email: string): Promise<void>;
+    create(qtd_camas: number): Promise<void>;
 
     /**
      * List all rooms
@@ -33,7 +34,7 @@ interface IRoomsRepository {
      * @param room room where the person will be inserted
      * @param email email of the person to be inserted
      */
-    insertPerson(room: Room, email: string): Promise<void>;
+    insertPerson(room: Room, Person: Person): Promise<void>;
 
     /**
      * Remove a person from a room
@@ -44,9 +45,24 @@ interface IRoomsRepository {
 
     /**
      * Delete a room
-     * @param id ID of the room to be deleted
+     * @param room room to be deleted
      */
-    delete(id: string): Promise<void>;
+    delete(room: Room): Promise<void>;
+
+    /**
+     * 
+     * @param room room to be checked
+     * @returns true if the room is full, false otherwise
+     */
+    roomIsFull (room: Room): Promise<boolean>;
+
+    /**
+     * @param room room to be checked
+     * @returns true if the room is empty, false otherwise
+     */
+    roomIsEmpty (room: Room): Promise<boolean>;
+
+    listPeopleInsideRoom(room: Room): Promise<string[]>;
 }
 
 export default IRoomsRepository;

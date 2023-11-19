@@ -4,6 +4,7 @@ type Person = {
     empresa: string;
     com_quarto: boolean;
     senha: string;
+    id_quarto: string;
 };
 
 export default Person;
