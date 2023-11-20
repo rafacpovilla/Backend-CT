@@ -3,6 +3,7 @@ import { Handler } from "src/errors/Handler";
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
 import ClientError from "src/errors/ClientError";
 import NotFoundError from "src/errors/NotFoundError";
+import ValidationError from "src/errors/ValidationError";
 import { ok } from "src/utils/Returns";
 
 
@@ -11,8 +12,8 @@ const updateRoom = async (
   ): Promise<APIGatewayProxyResult> => {
   
   const { room_id, qtd_camas } = JSON.parse(event.body);
-  if (room_id  === undefined)
-      throw new ClientError("Id não formatada!");
+  if (room_id  === undefined || qtd_camas === undefined)
+      throw new ValidationError("Id/qtd_camas não formatada!");
       
   const database = new RoomsRepositories();
   const room = await database.findById(room_id);

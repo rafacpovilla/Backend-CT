@@ -4,6 +4,7 @@ import RoomsRepositories from "src/repositories/implementations/RoomsRepositorie
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import ClientError from "src/errors/ClientError";
 import NotFoundError from "src/errors/NotFoundError";
+import ValidationError from "src/errors/ValidationError";
 import { ok } from "src/utils/Returns";
 
 const insertPerson = async (
@@ -13,7 +14,7 @@ const insertPerson = async (
     const { id_quarto, email } = JSON.parse(event.body);
     
     if (id_quarto === undefined)
-      throw new ClientError("ID não detectado!");
+      throw new ValidationError("ID não detectado!");
 
     const database = new RoomsRepositories();
 

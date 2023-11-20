@@ -4,6 +4,7 @@ import RoomsRepositories from "src/repositories/implementations/RoomsRepositorie
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import NotFoundError from "src/errors/NotFoundError";
 import ClientError from "src/errors/ClientError";
+import ValidationError from "src/errors/ValidationError";
 import { ok } from "src/utils/Returns";
 
 
@@ -13,7 +14,7 @@ const deleteRoom = async (
   
     const { id } = event.pathParameters;
     if (id === undefined)
-        throw new ClientError("Quarto não formatado!");
+        throw new ValidationError("Quarto não formatado!");
 
     const database = new RoomsRepositories();
     const room = await database.findById(id);
