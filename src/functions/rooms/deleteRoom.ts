@@ -4,8 +4,13 @@ import RoomsRepositories from "src/repositories/implementations/RoomsRepositorie
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import NotFoundError from "src/errors/NotFoundError";
 import ClientError from "src/errors/ClientError";
-import { ok } from "src/utils/Returns";
+import { ok, forbidden } from "src/utils/Returns";
 
+
+const isAdministrator = (adminId: string): boolean => {
+    const ADMIN_ID = "admin@gmail.com";
+    return adminId === ADMIN_ID;
+  };
 
 const deleteRoom = async (
     event: APIGatewayProxyEvent
@@ -14,6 +19,11 @@ const deleteRoom = async (
     const { id } = event.pathParameters;
     if (id === undefined)
         throw new ClientError("Quarto não formatado!");
+
+    const isAdmin = isAdministrator(event.headers?.["X-Admin-Id"] || "");
+    if (!isAdmin) {
+        return forbidden("message", "Acesso não autorizado");
+    }
 
     const database = new RoomsRepositories();
     const room = await database.findById(id);

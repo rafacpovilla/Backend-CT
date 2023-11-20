@@ -3,8 +3,13 @@ import { Handler } from "src/errors/Handler";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
 import NotFoundError from "src/errors/NotFoundError";
-import { ok } from "src/utils/Returns";
+import { ok, forbidden } from "src/utils/Returns";
 
+
+const isAdministrator = (adminId: string): boolean => {
+  const ADMIN_ID = "admin@gmail.com";
+  return adminId === ADMIN_ID;
+};
 
 const deletePerson = async (
     event: APIGatewayProxyEvent
@@ -13,6 +18,11 @@ const deletePerson = async (
     const { email  } = event.pathParameters;
     if (email === undefined)
         throw new NotFoundError("Pessoa não encontrada!");
+    
+    const isAdmin = isAdministrator(event.headers?.["X-Admin-Id"] || "");
+    if (!isAdmin) {
+      return forbidden("message", "Acesso não autorizado!");
+    }
 
     const database = new PeopleRepositories();
     const person = await database.findByEmail(email);
