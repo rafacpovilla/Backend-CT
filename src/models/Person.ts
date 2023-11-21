@@ -1,5 +1,5 @@
 type Person = {
-    name: string;
+    nome: string;
     email: string;
     empresa: string;
     com_quarto: boolean;

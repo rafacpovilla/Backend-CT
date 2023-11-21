@@ -71,7 +71,7 @@ class RoomsRepositories implements IRoomsRepository{
         const pessoasSnapshot = await getDocs(pessoasCollection);
 
         const listaPessoas = pessoasSnapshot.docs.map((pessoaDoc) => ({
-            nome: pessoaDoc.data().name,
+            nome: pessoaDoc.data().nome,
             empresa: pessoaDoc.data().empresa,
         }));
         const room = {
@@ -91,7 +91,7 @@ class RoomsRepositories implements IRoomsRepository{
 
     async insertPerson(room: Rooom, Person: Person): Promise<void> {
         await setDoc(doc(this.db, "pessoas", Person.email), {
-            name: Person.name,
+            nome: Person.nome,
             email: Person.email,
             empresa: Person.empresa,
             com_quarto: true,
@@ -100,7 +100,7 @@ class RoomsRepositories implements IRoomsRepository{
         });
         await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {});
         await setDoc(doc(this.db, "quartos", room.id, "pessoas", Person.email), {
-            name: Person.name,
+            nome: Person.nome,
             empresa: Person.empresa
         });
         return undefined;

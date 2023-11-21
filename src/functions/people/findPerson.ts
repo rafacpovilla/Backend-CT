@@ -18,6 +18,8 @@ const findPerson = async (
     const person = await database.findByEmail(email);
     if (person === undefined)
         throw new NotFoundError("Email não encontrado!");
+
+    console.log(person.nome);
     
     return ok("message", person);
   };
