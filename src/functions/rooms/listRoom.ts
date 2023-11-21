@@ -12,7 +12,7 @@ const listRoom = async (
     const { id } = event.pathParameters;
 
     if (id === undefined)
-        throw new ValidationError("Id não encontrado!");
+        throw new ValidationError("Id não formatado!");
 
     const database = new RoomsRepositories();
 

@@ -11,8 +11,8 @@ const updateRoom = async (
   ): Promise<APIGatewayProxyResult> => {
   
   const { room_id, qtd_camas } = JSON.parse(event.body);
-  if (room_id  === undefined)
-      throw new ValidationError("Id não formatada!");
+  if (room_id  === undefined || qtd_camas === undefined)
+      throw new ValidationError("Id/qtd_camas não formatada!");
       
   const database = new RoomsRepositories();
   const room = await database.findById(room_id);

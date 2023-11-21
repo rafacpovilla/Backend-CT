@@ -5,6 +5,7 @@ import PeopleRepositories from "src/repositories/implementations/PeopleRepositor
 import ClientError from "src/errors/ClientError";
 import ValidationError from "src/errors/ValidationError";
 import NotFoundError from "src/errors/NotFoundError";
+import ValidationError from "src/errors/ValidationError";
 import { ok } from "src/utils/Returns";
 
 const insertPerson = async (

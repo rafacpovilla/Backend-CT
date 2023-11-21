@@ -6,6 +6,7 @@ import ValidationError from "src/errors/ValidationError";
 import NotFoundError from "src/errors/NotFoundError";
 import { ok, forbidden } from "src/utils/Returns";
 
+
 const deleteRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
