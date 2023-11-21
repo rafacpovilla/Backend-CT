@@ -18,6 +18,12 @@ const removePerson = async (
     const database = new RoomsRepositories();
     const room = await database.findById(id_quarto);
 
+    if (room === undefined)
+      throw new NotFoundError("Quarto não encontrado!");
+
+    database.removePerson(room, email);
+
+
     const database2 = new PeopleRepositories();
     const person = await database2.findByEmail(email);
 

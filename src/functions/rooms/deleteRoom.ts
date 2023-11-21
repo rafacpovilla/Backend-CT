@@ -2,16 +2,21 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Handler } from "src/errors/Handler";
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
-import NotFoundError from "src/errors/NotFoundError";
-import ClientError from "src/errors/ClientError";
 import ValidationError from "src/errors/ValidationError";
-import { ok } from "src/utils/Returns";
+import NotFoundError from "src/errors/NotFoundError";
+import { ok, forbidden } from "src/utils/Returns";
 
 
 const deleteRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
+    const { adminId, adminSenha } = JSON.parse(event.body);
+    const tryADM = new PeopleRepositories();
+    if (!await tryADM.isAdministrator(adminId, adminSenha)) {
+      return forbidden("message", "Acesso não autorizado");
+    }
+
     const { id } = event.pathParameters;
     if (id === undefined)
         throw new ValidationError("Quarto não formatado!");

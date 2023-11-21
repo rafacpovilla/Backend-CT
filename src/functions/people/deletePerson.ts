@@ -4,22 +4,19 @@ import PeopleRepositories from "src/repositories/implementations/PeopleRepositor
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
 import ValidationError from "src/errors/ValidationError";
 import NotFoundError from "src/errors/NotFoundError";
+import { ok, forbidden } from "src/utils/Returns";
 import { ok } from "src/utils/Returns";
-import ClientError from "src/errors/ClientError";
 
 
 const deletePerson = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
-    const { login, senha } = event.body;
-    
-    if (login !== "admin")
-      throw new ClientError("Sem permissão de acesso!");
-    
-    const database = new PeopleRepositories();
-    const admin = await database.findByEmail(login);
-    if (senha !== admin.senha)
-      throw new ClientError("Senha incorreta!");
+
+    const { adminID, adminSenha } = JSON.parse(event.body);
+    const tryADM = new PeopleRepositories();
+    if (! await tryADM.isAdministrator(adminID, adminSenha)) {
+      return forbidden("message", "Acesso não autorizado");
+    }
   
     const { email  } = event.pathParameters;
     if (email === undefined)
@@ -29,11 +26,11 @@ const deletePerson = async (
     if (person === undefined)
         throw new NotFoundError("Pessoa não encontrada!");
 
-
+    const database2 = new RoomsRepositories();
     if (person.id_quarto !== null) {
-      const database2 = new RoomsRepositories();
       const room = await database2.findById (person.id_quarto);
-      await database2.removePerson (room, email);
+      if (room !== undefined)
+        await database2.removePerson (room, email);
     }
 
     database.delete(email);
