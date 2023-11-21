@@ -2,8 +2,8 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Handler } from "src/errors/Handler";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import NotFoundError from "src/errors/NotFoundError";
-import { ok } from "src/utils/Returns";
 import ValidationError from "src/errors/ValidationError";
+import { ok } from "src/utils/Returns";
 
 const updatePassword = async (
     event: APIGatewayProxyEvent

@@ -3,8 +3,8 @@ import { Handler } from "src/errors/Handler";
 import RoomsRepositories from "src/repositories/implementations/RoomsRepositories";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import ClientError from "src/errors/ClientError";
-import NotFoundError from "src/errors/NotFoundError";
 import ValidationError from "src/errors/ValidationError";
+import NotFoundError from "src/errors/NotFoundError";
 import { ok } from "src/utils/Returns";
 
 const insertPerson = async (

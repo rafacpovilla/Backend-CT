@@ -40,6 +40,14 @@ interface IPeopleRepositories {
      * @param Person Person to be removed
      */
     removeRoom (Person: Person): Promise<void>;
+
+    /**
+     * Check if the person is an administrator
+     * @param adminId Email of the person
+     * @param adminPass Password of the person
+     * @returns true if the person is an administrator
+    */
+    isAdministrator (adminId: string, adminPass: string): Promise<boolean>;
 }
 
 export default IPeopleRepositories;

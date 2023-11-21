@@ -76,7 +76,9 @@ export const notFound = (message: string): APIGatewayProxyResult =>
 export const badRequest = (message: string): APIGatewayProxyResult =>
   appError(new ClientError(message));
 
-export const forbidden = (
-  message = "forbidden access"
-): APIGatewayProxyResult =>
-  appError(new AppError(message, HttpStatusCode.FORBIDDEN));
+export const forbidden = (key: string, message: string) => {
+  return {
+    statusCode: 403,
+    body: JSON.stringify({ [key]: message }),
+  };
+};
