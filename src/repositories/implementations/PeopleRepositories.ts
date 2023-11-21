@@ -93,6 +93,15 @@ class PeopleRepositories implements IPeopleRepositories {
         });
         return undefined;
     }
+
+    async isAdministrator (adminId: string, adminPass: string): Promise<boolean> {
+        const ADMIN_ID = "ADMIN";
+        const ADMIN_PASSWORD = "CTJUNIOR>>>";
+        
+        if ( adminId === ADMIN_ID && adminPass === ADMIN_PASSWORD)
+            return true;
+        return false;
+      };
 }
 
 export default PeopleRepositories;

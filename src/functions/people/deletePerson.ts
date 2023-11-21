@@ -6,23 +6,19 @@ import NotFoundError from "src/errors/NotFoundError";
 import { ok, forbidden } from "src/utils/Returns";
 
 
-const isAdministrator = (adminId: string): boolean => {
-  const ADMIN_ID = "admin@gmail.com";
-  return adminId === ADMIN_ID;
-};
-
 const deletePerson = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
+
+    const { adminID, adminSenha } = JSON.parse(event.body);
+    const tryADM = new PeopleRepositories();
+    if (! await tryADM.isAdministrator(adminID, adminSenha)) {
+      return forbidden("message", "Acesso não autorizado");
+    }
   
     const { email  } = event.pathParameters;
     if (email === undefined)
         throw new NotFoundError("Pessoa não encontrada!");
-    
-    const isAdmin = isAdministrator(event.headers?.["X-Admin-Id"] || "");
-    if (!isAdmin) {
-      return forbidden("message", "Acesso não autorizado!");
-    }
 
     const database = new PeopleRepositories();
     const person = await database.findByEmail(email);
@@ -30,8 +26,11 @@ const deletePerson = async (
         throw new NotFoundError("Pessoa não encontrada!");
 
     const database2 = new RoomsRepositories();
-    const room = await database2.findById (person.id_quarto);
-    await database2.removePerson (room, email);
+    if (person.id_quarto !== null) {
+      const room = await database2.findById (person.id_quarto);
+      if (room !== undefined)
+        await database2.removePerson (room, email);
+    }
 
     database.delete(email);
         

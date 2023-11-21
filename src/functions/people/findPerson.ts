@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Handler } from "src/errors/Handler";
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import NotFoundError from "src/errors/NotFoundError";
+import ValidationError from "src/errors/ValidationError";
 import { ok } from "src/utils/Returns";
 
 const findPerson = async (
@@ -10,7 +11,7 @@ const findPerson = async (
   
     const email = event.pathParameters.email;
     if (email === undefined)
-        throw new NotFoundError("Nome não encontrado!");
+        throw new ValidationError("Email não formatado!");
 
     const database = new PeopleRepositories();
 
