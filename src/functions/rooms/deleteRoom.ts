@@ -11,11 +11,10 @@ const deleteRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
 
-    
-
-    const { adminId, adminSenha } = JSON.parse(event.body);
+    const { adminID, adminSenha } = JSON.parse(event.body);
+    console.log (adminID, adminSenha);
     const tryADM = new PeopleRepositories();
-    if (!await tryADM.isAdministrator(adminId, adminSenha)) {
+    if (!await tryADM.isAdministrator(adminID, adminSenha)) {
       return forbidden("message", "Acesso não autorizado");
     }
 

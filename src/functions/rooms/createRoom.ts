@@ -9,10 +9,10 @@ const createRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
   
-    const { qtd_cama, adminId, adminSenha } = JSON.parse(event.body);
+    const { qtd_cama, adminID, adminSenha } = JSON.parse(event.body);
 
     const tryADM = new PeopleRepositories();
-    if (! await tryADM.isAdministrator(adminId, adminSenha)) {
+    if (! await tryADM.isAdministrator(adminID, adminSenha)) {
       return forbidden("message", "Acesso não autorizado");
     }
 
