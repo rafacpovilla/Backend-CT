@@ -17,12 +17,12 @@ const deletePerson = async (
     }
   
     const { email  } = event.pathParameters;
-    if (email === undefined)
+    if (!email)
         throw new ValidationError("Pessoa não formatada!");
 
     const database = new PeopleRepositories();
     const person = await database.findByEmail(email);
-    if (person === undefined)
+    if (!person)
         throw new NotFoundError("Pessoa não encontrada!");
 
     const database2 = new RoomsRepositories();
@@ -32,7 +32,7 @@ const deletePerson = async (
         await database2.removePerson (room, email);
     }
 
-    database.delete(email);
+    await database.delete(email);
         
     return ok("message", "Pessoa deletada com sucesso!");
   };

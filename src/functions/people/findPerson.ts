@@ -10,13 +10,13 @@ const findPerson = async (
   ): Promise<APIGatewayProxyResult> => {
   
     const email = event.pathParameters.email;
-    if (email === undefined)
+    if (!email)
         throw new ValidationError("Email não formatado!");
 
     const database = new PeopleRepositories();
 
     const person = await database.findByEmail(email);
-    if (person === undefined)
+    if (!person)
         throw new NotFoundError("Email não encontrado!");
     
     return ok("message", person);

@@ -10,13 +10,13 @@ const updatePassword = async (
   ): Promise<APIGatewayProxyResult> => {
   
   const { email, nova_senha } = JSON.parse(event.body);
-  if (email === undefined || nova_senha === undefined)
+  if (!email || !nova_senha)
       throw new ValidationError("Pessoa não formatada!");
       
   const database = new PeopleRepositories();
   const person = await database.findByEmail(email);
 
-  if (person === undefined)
+  if (!person)
       throw new NotFoundError("Email não encontrado!");
 
   await database.updatePassword(person, nova_senha);
