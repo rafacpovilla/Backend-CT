@@ -4,19 +4,12 @@ import RoomsRepositories from "src/repositories/implementations/RoomsRepositorie
 import PeopleRepositories from "src/repositories/implementations/PeopleRepositories";
 import ValidationError from "src/errors/ValidationError";
 import NotFoundError from "src/errors/NotFoundError";
-import { ok, forbidden } from "src/utils/Returns";
+import { ok } from "src/utils/Returns";
 
 
 const deleteRoom = async (
     event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> => {
-
-    const { adminID, adminSenha } = JSON.parse(event.body);
-    console.log (adminID, adminSenha);
-    const tryADM = new PeopleRepositories();
-    if (!await tryADM.isAdministrator(adminID, adminSenha)) {
-      return forbidden("message", "Acesso não autorizado");
-    }
 
     const { id } = event.pathParameters;
     if (id === undefined)
